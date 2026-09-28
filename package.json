@@ -1,0 +1,20 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "A Dev Support Application or Issue Management Application",
+  "homepage": "https://github.com/santoshDEV04/DevDesk#readme",
+  "bugs": {
+    "url": "https://github.com/santoshDEV04/DevDesk/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/santoshDEV04/DevDesk.git"
+  },
+  "license": "ISC",
+  "author": "Santosh Kumar Dash",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
