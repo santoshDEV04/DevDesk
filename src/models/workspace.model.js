@@ -1,4 +1,4 @@
-import { model , Schema } from mongoose;
+import { model , Schema } from 'mongoose';
 
 const workSpaceSchema = new Schema(
     {
@@ -20,7 +20,6 @@ const workSpaceSchema = new Schema(
             ref: "User",
             required: true
         },
-
         members: [
             {
                 type: Schema.Types.ObjectId,
