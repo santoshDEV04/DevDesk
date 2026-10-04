@@ -2,6 +2,10 @@ import express from 'express';
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
+
+import authRoutes from "./routes/auth.routes.js"
+
+
 const app = express()
 
 app.use(
@@ -18,5 +22,8 @@ app.get("/api/health", (req, res) => {
         message: "DevDesk API is running",
     })
 })
+
+// Authentication routes
+app.use("/api/auth", authRoutes);
 
 export default app;

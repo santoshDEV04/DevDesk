@@ -1,9 +1,9 @@
 import { model , Schema } from 'mongoose';
-import bcrypt from bcrypt;
+import bcrypt from 'bcryptjs';
 
 const userSchema = Schema(
     {
-        username: {
+        name: {
             type: String,
             required: [true, "username is required!"],
             unique: true,
@@ -44,12 +44,10 @@ const userSchema = Schema(
     }
 );
 
-userSchema.pre("save", async function (next) {
-    if(!this.isModified(password)) return next();
+userSchema.pre("save", async function () {
+    if(!this.isModified("password")) return;
 
     this.password = await bcrypt.hash(this.password, 10);
-
-    next();
 })
 
 userSchema.methods.comparePassword = function (password) {
