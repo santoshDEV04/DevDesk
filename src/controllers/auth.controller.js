@@ -58,3 +58,75 @@ export const registerUser = async (req, res) => {
         })
     }
 }
+
+export const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        if(typeof email !== 'string' || typeof password !== 'string' || !email.trim() || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Email and password are required."
+            })
+        }
+
+        const normalizedEmail = email.trim().toLowerCase();
+
+        const user = await User.findOne({
+            email: normalizedEmail
+        }).select('+password');
+
+        if(!user) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid email or password."
+            })
+        }
+
+        const isPasswordValid = await user.comparePassword(password)
+
+        if(!isPasswordValid) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid email or password.'
+            })
+        }
+
+        if(!process.env.JWT_SECRET) {
+            throw new Error('JWT_SECRET is not configured.')
+        }
+
+        const accessToken = jwt.sign(
+            { sub: user._id.toString() },
+            process.env.JWT_SECRET,
+            { expiresIn: '15m' }
+        )
+
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true,
+            // secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax'
+        } )
+
+        return res.status(200).json({
+            success: true,
+            message: "Login successfull.",
+            data: {
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    avatar: user.avatar
+                }
+            }
+        })
+    } catch (error) {
+        console.error('Login error: ', error);
+
+        return res.status(500).json({
+            success : false,
+            message: 'Something went wrong while logging in.'
+        })
+    }
+}
