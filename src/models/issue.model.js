@@ -1,5 +1,5 @@
 import mongoose , { model , Schema } from 'mongoose';
-const issueSchema = new model (
+const issueSchema = new Schema (
     {
         title: {
             type: String,
@@ -17,7 +17,7 @@ const issueSchema = new model (
         status: {
             type: String,
             enum: ["TODO", "IN_PROGRESS", "RESOLVED", "CLOSED"],
-            defalut: "TODO",
+            default: "TODO",
             index: true,
         },
         priority: {
@@ -55,7 +55,7 @@ const issueSchema = new model (
 )
 
 issueSchema.index({ project: 1, createdAt: -1})
-issueSchema.index({ assignee: 1, status: 11})
+issueSchema.index({ assignee: 1, status: 1})
 
 const Issue = model("Issue", issueSchema);
 
