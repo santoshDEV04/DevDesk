@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import jwt from 'jsonwebtoken'
 
 export const registerUser = async (req, res) => {
     try {
@@ -92,13 +93,13 @@ export const loginUser = async (req, res) => {
             })
         }
 
-        if(!process.env.JWT_SECRET) {
+        if(!process.env.ACCESS_TOKEN_SECRET) {
             throw new Error('JWT_SECRET is not configured.')
         }
 
         const accessToken = jwt.sign(
             { sub: user._id.toString() },
-            process.env.JWT_SECRET,
+            process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: '15m' }
         )
 
@@ -106,7 +107,7 @@ export const loginUser = async (req, res) => {
             httpOnly: true,
             // secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax'
-        } )
+        })
 
         return res.status(200).json({
             success: true,
