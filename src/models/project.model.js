@@ -1,7 +1,7 @@
 import { model , Schema } from "mongoose";
-import Workspace from "./workspace.model";
+import Workspace from "./workspace.model.js";
 
-const projectSchema = new model(
+const projectSchema = new Schema(
     {
         name: {
             type: String,

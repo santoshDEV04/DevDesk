@@ -4,6 +4,13 @@ export const registerUser = async (req, res) => {
     try {
         const {name , email , password} = req.body;
 
+        if(typeof name !== 'string' || typeof email !== 'string' || typeof password !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: "Name , email and password must be strings."
+            })
+        }
+
         if(!name || !email || !password) {
             return res.status(400).json( {
                 success: false,
@@ -11,7 +18,9 @@ export const registerUser = async (req, res) => {
             })
         }
 
-        const existingUser = await User.findOne({ email })
+        const normalizedEmail = email.trim().toLowerCase();
+
+        const existingUser = await User.findOne({ email: normalizedEmail })
 
         if(existingUser) {
             return res.status(409).json({
@@ -21,8 +30,8 @@ export const registerUser = async (req, res) => {
         }
 
         const user = new User({
-            name,
-            email,
+            name: name.trim(),
+            email: normalizedEmail,
             password
         })
 
