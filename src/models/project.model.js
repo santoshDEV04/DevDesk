@@ -1,5 +1,4 @@
 import { model , Schema } from "mongoose";
-import Workspace from "./workspace.model.js";
 
 const projectSchema = new Schema(
     {
@@ -20,6 +19,7 @@ const projectSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Workspace",
             required: true,
+            index: true,
         },
         createdBy: {
             type: Schema.Types.ObjectId,

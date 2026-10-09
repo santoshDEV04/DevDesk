@@ -20,12 +20,17 @@ const workSpaceSchema = new Schema(
             ref: "User",
             required: true
         },
-        members: [
-            {
+        members: {
+            type: [{
                 type: Schema.Types.ObjectId,
-                ref: "User"
+                ref: 'User'
+            }],
+            default: [],
+            vaidate: {
+                validator: (members) => new Set(members.map(String)).size === members.length,
+                message: "Workspace members cannot contain duplicates."
             }
-        ]
+        }
     },
     {
         timestamps: true,
